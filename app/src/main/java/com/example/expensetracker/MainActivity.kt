@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.example.expensetracker.ui.screens.HomeScreen
 import com.example.expensetracker.ui.screens.AddEditScreen
 import com.example.expensetracker.ui.screens.StatisticsScreen
+import com.example.expensetracker.ui.screens.TransactionCard
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,6 +39,11 @@ class MainActivity : ComponentActivity() {
                       ) {
                           composable("home") { HomeScreen(navController) }
                           composable("add_edit") { AddEditScreen(navController) }
+//                          composable("add_edit/{transactionId}") { backStackEntry ->
+//                              val transactionId = backStackEntry.arguments?.getString("transactionId")?.toIntOrNull()
+//                              // Pastikan `transactionId` sudah diparsing dengan benar
+//                              AddEditScreen(navController, transactionId = transactionId)
+//                          }
                           composable("statistics") { StatisticsScreen(navController) }
                       }
                 }

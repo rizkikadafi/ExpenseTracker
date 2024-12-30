@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.expensetracker.data.model.Transaction
 import com.example.expensetracker.viewmodel.TransactionViewModel
@@ -71,6 +73,8 @@ fun HomeScreen(
 
           TransactionList(
               transactions = transactions,
+              navController = navController,
+              viewModel = viewModel
           )
       }
     }
@@ -117,7 +121,9 @@ fun SummarySection(income: Double, expense: Double) {
 
 @Composable
 fun TransactionList(
-    transactions: List<Transaction>
+    transactions: List<Transaction>,
+    navController: NavController,
+    viewModel: TransactionViewModel
 ) {
     if (transactions.isEmpty()) {
         Text(
@@ -129,18 +135,32 @@ fun TransactionList(
     } else {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(transactions) { transaction ->
-                TransactionCard(transaction = transaction)
+                TransactionCard(
+                    transaction = transaction,
+                    navController = navController,
+                    onDelete = {
+                        viewModel.deleteTransaction(transaction)
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun TransactionCard(transaction: Transaction) {
+fun TransactionCard(
+    transaction: Transaction,
+    navController: NavController,
+    onDelete: (Transaction) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable {
+                navController.navigate("add_edit")
+            },
+
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
@@ -163,6 +183,13 @@ fun TransactionCard(transaction: Transaction) {
                 text = "Rp ${transaction.amount.toInt()}",
                 style = MaterialTheme.typography.bodyLarge,
             )
+            // Delete Button
+            IconButton(onClick = { onDelete(transaction) }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete Transaction"
+                )
+            }
         }
     }
 }
