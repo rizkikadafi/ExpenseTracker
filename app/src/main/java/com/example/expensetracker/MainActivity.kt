@@ -13,12 +13,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.expensetracker.data.model.Transaction
 import com.example.expensetracker.ui.theme.ExpenseTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.expensetracker.ui.screens.HomeScreen
 import com.example.expensetracker.ui.screens.AddEditScreen
 import com.example.expensetracker.ui.screens.StatisticsScreen
 import com.example.expensetracker.ui.screens.TransactionCard
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -39,11 +42,14 @@ class MainActivity : ComponentActivity() {
                       ) {
                           composable("home") { HomeScreen(navController) }
                           composable("add_edit") { AddEditScreen(navController) }
-//                          composable("add_edit/{transactionId}") { backStackEntry ->
-//                              val transactionId = backStackEntry.arguments?.getString("transactionId")?.toIntOrNull()
-//                              // Pastikan `transactionId` sudah diparsing dengan benar
-//                              AddEditScreen(navController, transactionId = transactionId)
-//                          }
+                          composable("add_edit/{transaction}") { navBackStackEntry ->
+                              val transactionJson = navBackStackEntry.arguments?.getString("transaction")
+
+                              val gson: Gson = GsonBuilder().create()
+                              val transactionObject = gson.fromJson(transactionJson, Transaction::class.java)
+
+                              AddEditScreen(navController, transactionToEdit = transactionObject)
+                          }
                           composable("statistics") { StatisticsScreen(navController) }
                       }
                 }

@@ -17,6 +17,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.expensetracker.data.model.Transaction
 import com.example.expensetracker.viewmodel.TransactionViewModel
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,12 +156,15 @@ fun TransactionCard(
     navController: NavController,
     onDelete: (Transaction) -> Unit
 ) {
+
+    val transactionJson = Gson().toJson(transaction)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable {
-                navController.navigate("add_edit")
+                navController.navigate("add_edit/$transactionJson")
             },
 
         elevation = CardDefaults.cardElevation(4.dp)

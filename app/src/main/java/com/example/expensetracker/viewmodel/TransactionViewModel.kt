@@ -1,5 +1,6 @@
 package com.example.expensetracker.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
@@ -29,10 +30,7 @@ class TransactionViewModel @Inject constructor(
     fun getTotalExpense(): Flow<Double> {
         return transactionDao.getTotalByType(TransactionType.EXPENSE.name)
     }
-//    fun getTransactionById(id: Int): Transaction? {
-//        // Gantikan dengan logika untuk mengambil transaksi berdasarkan ID
-//        return transactionDao.getTransactionById(id)
-//    }
+
     // Tambah transaksi
     fun addTransaction(transaction: Transaction) {
         viewModelScope.launch {
@@ -53,4 +51,6 @@ class TransactionViewModel @Inject constructor(
             transactionDao.delete(transaction)
         }
     }
+
+    
 }

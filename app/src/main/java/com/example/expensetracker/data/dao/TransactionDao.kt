@@ -31,8 +31,4 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE category = :category ORDER BY date DESC")
     fun getTransactionsByCategory(category: String): LiveData<List<Transaction>>
 
-//    @Query("SELECT * FROM transactions WHERE id = :id LIMIT 1")
-//    fun getTransactionById(id: Int): Transaction?
-
-
 }

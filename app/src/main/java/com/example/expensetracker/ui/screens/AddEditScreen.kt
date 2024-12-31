@@ -17,28 +17,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun AddEditScreen(
     navController: NavController,
-//    transactionId: Int? = null, // Terima id transaksi
     viewModel: TransactionViewModel = hiltViewModel(),
     transactionToEdit: Transaction? = null,
 
 ) {
-//    val transactionId = navController.currentBackStackEntry?.arguments?.getInt("transactionId")
 
     // Form state
     var title by remember { mutableStateOf(transactionToEdit?.title ?: "") }
     var amount by remember { mutableStateOf(transactionToEdit?.amount?.toString() ?: "") }
     var type by remember { mutableStateOf(transactionToEdit?.type ?: TransactionType.INCOME) }
     var category by remember { mutableStateOf(transactionToEdit?.category ?: "") }
-
-//    if (transactionId != null) {
-//        viewModel.getTransactionById(transactionId)?.let { transaction ->
-//            // Update form state berdasarkan transaksi yang diambil
-//            title = transaction.title
-//            amount = transaction.amount.toString()
-//            type = transaction.type
-//            category = transaction.category
-//        }
-//    }
 
 
     Scaffold(
